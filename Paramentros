@@ -1,0 +1,65 @@
+#include <iostream>
+
+using namespace std;
+
+void printMessage(){
+    //Local Scope
+    //int x = 5;
+    cout << "Math Operations" << endl;
+}
+
+//Global Scope
+//int x = 5;
+
+void addNums(int num1, int num2){
+    cout << "Resultado de la suma es: " << (num1 + num2) << endl;
+    
+}
+
+int addNums2(int num1, int num2){
+    return num1 + num2;
+}
+
+void value(int x){
+    cout << x + 5 << endl;
+}
+
+void reference(int& x){
+    cout << x + 5 << endl;
+}
+
+void askUser(int& score, string& name){
+    cout << "Please type in your name: ";
+    cin >> name;
+    
+    cout << "Enter your score: ";
+    cin >> score;
+    
+}
+
+int main()
+{
+    int score;
+    string name;
+    int x = 5;
+    
+    askUser(score, name);
+    
+    //Por valor
+    value(x); 
+    
+    //Por referencia
+    reference(x);
+            
+    printMessage();
+    int num1, num2;
+    
+    cout << "Type in two integers: ";
+    cin >> num1 >> num2;
+    
+    //Con Void
+    addNums(num1, num2);
+    //Sin void, con return
+    addNums2(num1,num2);
+    return 0;
+}
