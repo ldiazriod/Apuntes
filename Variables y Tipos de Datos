@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    
+    // DataType nameOfVariable;
+    // nameOfVariable = value;
+    
+    //DataTypes
+    //Integers - int, unsigned int, short
+    // int(4 bytes) -- 3 of 4 used for numbers, one used for de sing
+    // unsigned -- all 4 bytes can be use for numbers
+    //Floating - double, long double, float
+    //String - string "" group of caracters
+    //Char - char '' single caracter
+    //boolean - boolean/false
+    
+    
+    int sample_variable;
+    sample_variable = 5;
+    
+    float sample_variable2;
+    sample_variable2 = 12,7;
+    
+    string sample_varible3;
+    sample_varible3 = "Comeme los cojones";
+    
+    
+    cout << "Tu variable entera es: " << sample_variable << endl;
+    cout << "Tu variable decimal es: " << sample_variable2 << endl;
+    cout << "Tu frase es: " << sample_varible3 << endl;
+    
+    
+    
+    return 0;
+}
