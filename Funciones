@@ -1,0 +1,37 @@
+#include <iostream>
+
+using namespace std;
+
+//Function: dataType  nameOfFunction(){}
+
+void welcomeMessage(){
+    
+    cout << "This is my first function!" << endl;
+    
+}
+
+int calculateNum(){
+    //CalculateNum - multiples two integers
+    
+    int a, b;
+    
+    cout << "Añade un número: ";
+    cin >> a;
+    
+    cout << "Añade otro número: ";
+    cin >> b;
+    
+    cout << "Resultado de la multiplicación: " << (a * b) << endl;
+    
+}
+
+int main()
+{
+    //Calling the function
+    welcomeMessage();
+    
+    calculateNum();
+    
+    
+    return 0;
+}
