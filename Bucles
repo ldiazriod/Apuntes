@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    
+    string input;
+    cout << "Type something in: ";
+    cin >> input;
+    
+    
+    //Loops -- While, Do While, For, If
+    
+    int i{0};
+    while(i < 10){
+        cout << input << endl;
+        i++;
+    }
+    
+    
+    do{
+        cout << input << endl;
+    } while(i < 10);
+    
+    
+    for(int j{0}; j < 10; j++){
+        cout << input << endl;
+    }
+    
+    if(i < 10){
+        cout << input << endl;
+        i++;
+    }
+    
+    
+    return 0;
+}
