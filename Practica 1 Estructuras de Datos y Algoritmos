@@ -1,0 +1,209 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+
+//Ejercicio 1
+bool numPar(int n){
+    if(n == 0){
+        return true;
+    }else if(n == 1){
+        return false;
+    }else{
+        return numPar(n-2);
+    }
+}
+
+//Ejercicio 2
+bool esPar(int);
+bool esImpar(int);
+bool esPar(int n){
+    if(n == 0){
+        return true;
+    }else{
+        return esImpar(n -1);
+    }
+}
+
+bool esImpar(int n){
+    if(n == 1){
+        return true;
+    }else{
+        return esPar(n-1);
+    }
+}
+
+//Ejercicio 3
+int producto(int n, int m){
+    if(n == 0){
+        return 0;
+    }else if(n == 1){
+        return m;
+    }else {
+        return n + producto(n-1, m);
+    }
+}
+
+//Ejercicio 4
+int potencia1(int x, int n){
+    if(n == 0){
+        return 1;
+    }else if(n == 1){
+        return n;
+    }else{
+        return x * potencia1(x, n-1);
+    }
+}
+//Ejercicio 5
+int potencia2(int x, int n){
+    int p = potencia2(x, n/2);
+    if(n == 0){
+        return 1;
+    }else if(n % 2 == 0){
+        return (p * p);
+    }else{
+        return (x * p * p);
+    }
+}
+
+//Ejercicio 6
+int factorial(int n){
+    if(n == 0){
+        return 1;
+    }else {
+        return n * factorial(n-1);
+    }
+}
+
+//Ejercicio 7
+int fibonacci(int n){
+    if(n == 0){
+        return 0;
+    }else if(n == 1){
+        return 1;
+    }else {
+        return fibonacci(n-2) + fibonacci(n-1);
+    }
+}
+
+//Ejercicio 8
+int cociente(int dividendo, int divisor){
+    if(dividendo < divisor){
+        return 0;
+    }else{
+        return 1 + cociente(dividendo - divisor, divisor);
+    }
+}
+
+int resto(int dividendo, int divisor){
+    if(dividendo < divisor){
+        return dividendo;
+    }else{
+        return resto(dividendo - divisor, divisor);
+    }
+}
+
+//Ejercicio 9
+bool multiplo(int dividendo, int divisor){
+    if(dividendo < divisor){
+        return false;
+    }else {
+        
+    }
+}
+
+//Ejercicio 10
+int sumatoria(int n){
+    if(n == 0){
+        return 0;
+    }else {
+        return n + sumatoria(n-1);
+    }
+}
+
+int sumatoriaPar(int n){
+    if(n == 0){
+        return 0;
+    }else{
+        return n + sumatoria(n-2);
+    }
+}
+int sumatoriaImpar(int n){
+    if(n == 1){
+        return 1;
+    }else {
+        return n + sumatoria(n-2);
+    }
+}
+
+//Ejercicio 11
+int gcd(int a, int b){
+    if(b == 0){
+        return a;
+    }else{
+        return gcd(a, a % b);
+    }
+}
+
+//Ejercicio 12
+double eval(int coeficiente[], int n, int valor){
+    double r = 0.0;
+    for(int i{0}; i < n; i ++){
+        r = r + coeficiente[i] * pow(valor,i);
+    }
+    
+    return r;
+}
+
+//Ejercicio 13
+int minimo(int v[], int n){
+    if(n > 0){
+        
+    }
+}
+
+void print(int v[], int n){
+    if(n > 0){
+        cout << v[n] << endl;
+    }else{
+        print(v, n-1);
+    }
+}
+
+int maximo(int v[], int n){
+    
+}
+int sumatoria(int v[], int n){
+    
+}
+int sumatoriaPar(int v[], int n){
+    
+}
+int sumatoriaImpar(int v[], int n){
+    
+}
+double promedio(int v[], int n, int total){
+    
+}
+bool existe(int v[], int n, int valor){
+    
+}
+void invierte(int v[], int p, int n){
+    
+}
+//Ejercicio 14
+int hanoi(int n, int origen, int auxiliar, int destino){
+    
+}
+
+//Ejercicio 15
+bool par2(int n){
+    
+}
+
+int main()
+{
+    cout << "Hello World!" << endl;
+    return 0;
+}
