@@ -1,5 +1,7 @@
 #include <iostream>
 #include <math.h>
+#include<vector>
+
 
 using namespace std;
 
@@ -109,7 +111,7 @@ bool multiplo(int dividendo, int divisor){
     if(dividendo < divisor){
         return false;
     }else {
-        
+
     }
 }
 
@@ -152,14 +154,14 @@ double eval(int coeficiente[], int n, int valor){
     for(int i{0}; i < n; i ++){
         r = r + coeficiente[i] * pow(valor,i);
     }
-    
+
     return r;
 }
 
 //Ejercicio 13
-int minimo(int v[], int n){
+/*int minimo(int v[], int n){
     if(n > 0){
-        
+
     }
 }
 
@@ -172,38 +174,96 @@ void print(int v[], int n){
 }
 
 int maximo(int v[], int n){
-    
+
 }
 int sumatoria(int v[], int n){
-    
+
 }
 int sumatoriaPar(int v[], int n){
-    
+
 }
 int sumatoriaImpar(int v[], int n){
-    
+
 }
 double promedio(int v[], int n, int total){
-    
+
 }
 bool existe(int v[], int n, int valor){
-    
+
 }
 void invierte(int v[], int p, int n){
-    
-}
+
+}*/
 //Ejercicio 14
-int hanoi(int n, int origen, int auxiliar, int destino){
-    
+void hanoi(int n, int origen, int auxiliar, int destino){
+    if(n == 1){
+        cout << "El disco " << n << " se mueve desde " << origen << " a la posicion " << destino << endl; //Si n = 1, solo hay un disco, por lo que se puede mover directamente al destino.
+        return;
+    }else{
+        hanoi(n-1, origen, destino, auxiliar);
+        cout << "El disco " << n << " se mueve desde " << origen << " a la posicion " << destino << endl;
+        hanoi(n-1, auxiliar, origen, destino);
+    }
 }
 
 //Ejercicio 15
 bool par2(int n){
+    for(int i{0}; i < n; i++){
+        n = n - 2;
+    }
+    if(n != 0){
+        cout << "Es impar" << endl;
+    }else{
+        cout << "Es par" << endl;
+    }
+
+}
+
+//Ejercicio 16
+int cociente2(int dividendo, int divisor){
+
+}
+
+int resto(){
+
+}
+
+//Ejercicio 17
+bool multiplo2(int dividendo, int divisor){
+
+}
+
+//Ejercicio 18
+int fibonacci2(int n){
+    int x{0}, y{1}, z{0};
+    for(int i{1}; i < n; i++){
+        cout << x << " ";
+        z = x + y;
+        x = y;
+        y = z;
+    }
+    cout << endl;
+}
+
+//Ejercicio 19
+void imprimeBinario(unsigned short n){
+    vector<int>bit;
     
 }
 
 int main()
 {
-    cout << "Hello World!" << endl;
+   int n;
+   cin >> n;
+   cout << "-----" << endl;
+  /* cout << "Meta el numero de discos que tiene la torre: ";
+   cin >> n;
+
+   cout << endl;
+   cout << "La posicion 1 es el origen, la posicion 2 es la auxiliar, la posicion 3 es la final" << endl;
+   hanoi(n, 1, 2, 3);
+   */
+   imprimeBinario(n);
     return 0;
 }
+
