@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+///Creacion del grafo:
+//Preguntar que nodo es el inicial y cuales son los siguientes
+//Vector guardar nodos
+//Vector guardas distancias entre nodos
+//Vector nodos ya recorridos
+///BFS
+//Preguntar cual es primer nodo
+//Vector ordenacion nodos
+//Meter nodos ya explorados
+
+void BFS(const vector<int>&dondeBuscar){
+    vector<char> nombreDeNodos; vector<float> distanciaEntreNodos;
+    int numDeNodos; char nombreNodo; string preguntarMeterDistancia;
+    cout << "Cuantos nodos tiene tu grado? :";
+    cin >> numDeNodos;
+    cout << "A continuacion va a meter la vocal correspondiente a cada nodo, es importante que sean vocales nada más y que vayan en orden:" << endl;
+    for(int i{0}; i < numDeNodos; i++){
+        cout << "Cual es el nombre del primer/siguiente nodo?: ";
+        cin >> nombreNodo;
+        nombreDeNodos.push_back(nombreNodo);
+    }
+    
+    cout << "Tus nodos son los siguientes: ";
+    
+    for (int j{0};j < nombreDeNodos.size(); j++ ) {
+        cout << nombreDeNodos.at(j) << " ";
+    }
+    
+    cout << endl;
+    
+    cout << "Quieres añadir distancia de un nodo a otro?(Meta Si para meter distancias/No para no meter distancias) es importante que las distancias vayan ordenadas: ";
+    cin >> preguntarMeterDistancia;
+    
+    if(preguntarMeterDistancia == "Si"){
+        for (int k{0}; k < (nombreDeNodos.size()/2); k++) {
+            cout << "Meta la distancia entre el nodo " << nombreDeNodos.at(k) << " y " << nombreDeNodos.at(k + 1) << endl;
+        }
+    }
+}
+
+
+int main(){
+    vector<int>dondeBuscar;
+    int numdenums, numMeter;
+    cout << "Cuantos numeros quieres meter?: ";
+    cin  >> numdenums;
+    for(int i{0}; i < numdenums; i++){
+        cout << "Que numero quieres meter?: ";
+        cin >> numMeter;
+        dondeBuscar.push_back(numMeter);
+    }
+
+}
