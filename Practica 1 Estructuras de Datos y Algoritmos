@@ -159,9 +159,11 @@ double eval(int coeficiente[], int n, int valor){
 }
 
 //Ejercicio 13
-/*int minimo(int v[], int n){
-    if(n > 0){
-
+int minimo(int v[], int n){
+    if(n == 1){
+        return v[0];
+    }else{
+        return min(v[n-1], minimo(v,n-1));
     }
 }
 
@@ -174,17 +176,31 @@ void print(int v[], int n){
 }
 
 int maximo(int v[], int n){
-
+    if(n == 1){
+        return v[0];
+    }else{
+        return max(v[n-1], minimo(v,n-1));
+    }
 }
-int sumatoria(int v[], int n){
 
+int sumatoria2(int v[], int n){
+    if(n == 1){
+        return v[0];
+    }else{
+        return v[n-1] + sumatoria2(v, n-1);
+    }
 }
-int sumatoriaPar(int v[], int n){
-
+int sumatoriaPar2(int v[], int n){
+    if(n == 1){
+        return v[0];
+    }else{
+        return v[n-2] + sumatoriaPar2(v, n-2);
+    }
 }
 int sumatoriaImpar(int v[], int n){
-
+    
 }
+/*
 double promedio(int v[], int n, int total){
 
 }
@@ -324,8 +340,6 @@ int main()
    cout << "La posicion 1 es el origen, la posicion 2 es la auxiliar, la posicion 3 es la final" << endl;
    hanoi(n, 1, 2, 3);
    */
-   producto2(n,m);
+   
     return 0;
 }
-
-
