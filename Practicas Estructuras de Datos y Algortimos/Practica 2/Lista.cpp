@@ -38,7 +38,13 @@ int Lista::elementos()
 
 bool Lista::existe(int v)
 {
-    
+    NodoLista *p = inicio;
+    while(p != nullptr){
+        if(p ->dato == v){
+            p = p ->siguiente;
+        }
+        return false;
+    }
 }
 
 void Lista::insertaInicio(int v)
