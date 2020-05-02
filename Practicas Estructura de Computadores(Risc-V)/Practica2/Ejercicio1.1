@@ -1,0 +1,49 @@
+.data
+
+str: .string "qwerty"
+     .word 0
+
+newline: .word 10
+.text
+begin:
+li t6, 32 
+
+la a1, str 
+li a0, 4
+ecall
+
+la a1, newline 
+li a7, 11
+ecall
+
+la a1, str 
+
+lb t1, 0(a1) 
+sub t1, t1, t6
+sb t1, 0(a1)
+
+lb t1, 1(a1)
+sub t1, t1, t6
+sb t1, 1(a1)
+
+lb t1, 2(a1)
+sub t1, t1, t6
+sb t1, 2(a1)
+
+lb t1, 3(a1)
+sub t1, t1, t6
+sb t1, 3(a1)
+
+lb t1, 4(a1)
+sub t1, t1, t6
+sb t1, 4(a1)
+
+lb t1, 5(a1)
+sub t1, t1, t6
+sb t1, 5(a1)
+
+li a0, 4
+ecall
+
+end:
+nop
