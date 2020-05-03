@@ -5,22 +5,31 @@ str: .string "hola buenos dias."
 .text
 begin: 
 li t6, 32 #Diferencia entre letras y espacio en ASCII
-li t5, 97 #número que correspondo al punto en ASCII.
 
 la a1, str
 
 loop:
+
+li t5, 46
 lb t1, 0(a1)
 beq t1, t5, end_loop
 
+beq t1, t6, continue
+
 sub t5, t1, t6
 sb t5, 0(a1)
-
 addi a1, a1, 1
 
 jal loop
 
+continue:
+
+sb t6, 0(a1)
+addi a1, a1, 1
+jal loop
+
 end_loop:
+
 la a1, str
-li a0, 93
+li a0, 4
 ecall
