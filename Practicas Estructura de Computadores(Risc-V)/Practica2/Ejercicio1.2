@@ -31,13 +31,13 @@ sub t5, t1, t6        #Nuestro caracter -32, guardada en t5 para ver correctamen
 sb t5, 0(a1)          #Guardamos el byte modificado en el string original.
 addi a1, a1, 1        #Por cada loop se suma 1 a a1, esto recorre el string.
 
-jal loop              #Llama al loop para que se repita hasta que salte la condición de salida.
+j loop                #Llama al loop para que se repita hasta que salte la condición de salida.
 
 continue:             #Una excepción para evitar que el espacio se combierta en null al ser restado.
 
 sb t6, 0(a1)          #Guardamos diractamente el espacio sin restarlo.
 addi a1, a1, 1        #Pasamos al siguiente caracter del string.
-jal loop              #Llamamos al loop para que siga hasta que se cumpla la expceción de salida.
+j loop                #Llamamos al loop para que siga hasta que se cumpla la expceción de salida.
 
 end_loop:             #Una vez llegado al punto, se imprime el string.
 
