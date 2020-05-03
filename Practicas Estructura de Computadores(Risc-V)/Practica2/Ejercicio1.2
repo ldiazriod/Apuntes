@@ -1,0 +1,21 @@
+.data
+
+str: .string "hola buenos dias."
+     .word 0
+
+.text
+begin: 
+li t6, 32
+li t5, 42 #número que correspondo al punto en ASCII.
+li t4, 32 #número que corresponde al espacio en ASCII.
+
+la t0, str
+
+loop:
+lb t1, 0(t0)
+beq t1, t5, end #Si el valor de t1 = 42, ha encontrado un punto. Imprime la cadena. 
+
+end:
+la a1, str
+li a0, 4
+ecall
