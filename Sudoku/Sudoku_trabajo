@@ -14,22 +14,22 @@ vector<vector<int>> sudoku0;  //Vector de vectores donde se va guardando todas l
 
 void print_sudoku(){
 
-    int counthuecos{0}, counthuecos2{0}, countfilas{0}, countgrupo{0};
+    int counthuecos{0}, counthuecos2{0}, countfilas{0}, countgrupo{0};               //contadores para saber las iteraciones del print
 
     cout << endl;
-    for(int i{0}; i < sudoku0.size(); i++){
-        for(int j{0}; j< sudoku0.at(i).size(); j++){
-            if(sudoku0.at(i).at(j) != 0){
-                cout << sudoku0.at(i).at(j);
+    for(int i{0}; i < sudoku0.size(); i++){                                              //Vamos imprimiendo, en el caso de que en esa posición haya un "0" (está vacio)
+        for(int j{0}; j < sudoku0.at(i).size(); j++){                                 //imprimimos un un espacio para que se vea el huevo vacio.                                                                                  
+            if(sudoku0.at(i).at(j) != 0){                                                                                                 
+                cout << sudoku0.at(i).at(j);                                                                                             
             }else{
                 cout << " ";
             }
             counthuecos++;
-            if(counthuecos == 3){
-                counthuecos  = 0;
-                counthuecos2++;
-                if(counthuecos2 == 3){
-                    counthuecos2 = 0;
+            if(counthuecos == 3){                                                          //si ha llegado a 3, reseteamos el contador. Si no, imprimimos "|"
+                counthuecos = 0;
+                counthuecos2++; 
+                if(counthuecos2 == 3){                                                  //si ha llegado a 3, reseteamos. Si no, Imprimimos "||". Con esto, cada 3 elementos impresos hacemos una separación
+                    counthuecos2 = 0;                                                 //de un cubo a otro.
                 }else{
                     cout << " || " ;
                 }
@@ -39,7 +39,7 @@ void print_sudoku(){
         }
         cout << endl;
         countfilas++;
-        if(countfilas == 3){
+        if(countfilas == 3){                                                      //Mismo funcionamiento que antes, pero esta vez para las separaciones horizontales.
             countfilas = 0;
             countgrupo++;
             if(countgrupo == 3){
@@ -54,19 +54,21 @@ void print_sudoku(){
     cout << endl;
 }
 
+
+//Estas funciones se hacen para comprobar filas, columnas y cubos, para más tarde hacer una función bool que llamaremos en el main para acabar el juego en caso de error.
 bool lose_fila(){
     bool a = false;
-    for (unsigned long int it{0}; it < sudoku0.size(); it++) {
+    for (unsigned long int i{0}; i < sudoku0.size(); i++) {
         vector<int> lose;
-        for (unsigned long int it2{0}; it2 < sudoku0.at(it).size(); it2++) {
-            if (sudoku0.at(it).at(it2) != 0){
-                lose.push_back(sudoku0.at(it).at(it2));
+        for (unsigned long int i_2{0}; i_2 < sudoku0.at(i).size(); i_2++) {
+            if (sudoku0.at(i).at(i_2) != 0){                                  //Metemos en el vector lose los números siempre y cuando no sean 0(está vacio)
+                lose.push_back(sudoku0.at(i).at(i_2));
             }
         }
-        for (unsigned long int j{0}; j < lose.size(); j++) {
+        for (unsigned long int j{0}; j < lose.size(); j++) {                 //Recorremos el vector 
             for (unsigned long int k{0}; k < lose.size(); k++) {
                 if (j != k){
-                    if (lose.at(j) == lose.at(k)){
+                    if (lose.at(j) == lose.at(k)){                            //Si encontramos dos numeros iguales, devolvemos true.
                         a = true;
                     }
                 }
@@ -78,11 +80,11 @@ bool lose_fila(){
 
 bool lose_columna(){
     bool a = false;
-    for (unsigned long int it{0}; it < sudoku0.size(); it++) {
+    for (unsigned long int i{0}; i < sudoku0.size(); i++) {                            //Igual que antes, salvo que ahora con las columnas.
         vector<int> lose;
-        for (unsigned long int it2{0}; it2 < sudoku0.at(it).size(); it2++) {
-            if (sudoku0.at(it2).at(it) != 0){
-                lose.push_back(sudoku0.at(it2).at(it));
+        for (unsigned long int i_2{0}; i_2 < sudoku0.at(i).size(); i_2++) {
+            if (sudoku0.at(i_2).at(i) != 0){
+                lose.push_back(sudoku0.at(i_2).at(i));                                 //Esto es lo que nos permite hacerlo con las columnas, la única parte distinta.
             }
         }
         for (unsigned long int j{0}; j < lose.size(); j++) {
@@ -101,15 +103,15 @@ bool lose_columna(){
 
 bool lose_cube(){
     bool a = false;
-    for (unsigned long int it{1}; it <= 7; it += 3) {
-        for (unsigned long int it2{1}; it2 <= 7; it2 +=3) {
+    for (unsigned long int i{1}; i <= 7; i += 3) {
+        for (unsigned long int i_2{1}; i_2 <= 7; i_2 +=3) {
             vector<int> lose;
             for (int e{-1}; e < 2; e++) {
                 for (int ee{-1}; ee < 2; ee++) {
-                    if (sudoku0.at(it+e).at(it+ee) != 0) lose.push_back(sudoku0.at(it+e).at(it+ee));
+                    if (sudoku0.at(i+e).at(i+ee) != 0) lose.push_back(sudoku0.at(i+e).at(i+ee));                      
                 }
             }
-            for (unsigned long int j{0}; j < lose.size(); j++) {
+            for (unsigned long int j{0}; j < lose.size(); j++) {                                              //El método de verificación es el mismo.
                 for (unsigned long int k{0}; k < lose.size(); k++) {
                     if (j != k){
                         if (lose.at(j) == lose.at(k)){
@@ -124,6 +126,7 @@ bool lose_cube(){
     return a;
 }
 
+//Función lose(), que más tarde en el main llamaremos en el caso de que sea = true.
 bool lose(){
     bool fila, columna, cube;  //Variables booleanas.
 
@@ -138,24 +141,25 @@ bool lose(){
     }
 }
 
+//Función win(), para si no se equivoca la persona al colocar los números.
 bool win(){
     bool a= false;
     vector<int> ceros;
-    for(int i{0}; i < sudoku0.size(); i++){                                             
-        for(int j{0}; j < sudoku0.at(i).size(); j++){                                   
-            if(sudoku0.at(i).at(j) == 0){                                               
-                ceros.push_back(sudoku0.at(i).at(j));                                   
+    for(int i{0}; i < sudoku0.size(); i++){             //Recorremos y buscamos ceros.                             
+        for(int j{0}; j < sudoku0.at(i).size(); j++){                                                           
+            if(sudoku0.at(i).at(j) == 0){              //Si hay algun 0, se guarda en el vector ceros.           
+                ceros.push_back(sudoku0.at(i).at(j));                                                             
             }
         }
     }
-    if(ceros.size() == 0){
-        if(lose() == false){
+    if(ceros.size() == 0){        //Si no hya ceros, todos los huecos están llenos.
+        if(lose() == false){      //En el caso de que lose() sea false, ha ganado, devolvemos true.
             a = true;
         }else{
-            a = false;
+            a = false;           //Si lose() es ture, devolvemos false.
         }
     }else{
-        a = false;
+        a = false;              //Si todavia hay ceros, devolvemos false.
     }
     return a;
 }
@@ -165,10 +169,10 @@ int main()
 {
     srand(time(NULL));
     ifstream sudoku;
-    string numbers;
+    string numbers, sudoku_name;
     int number;
-    string sudoku_name;
-
+    
+    
     //if random
     unsigned long int sudoku_number = rand()%(5);        //Generamos un número aleatorio.
 
@@ -215,7 +219,7 @@ int main()
                 "70 71 72 73 74 75 76 77 78" << endl <<
                 "80 81 82 83 84 85 86 87 88" << endl;
         cin >> numberr;
-        num1 = numberr/10%10;
+        num1 = numberr/10%10;           
         num2 = numberr - num1*10;
 
         if(sudoku0.at(num1).at(num2) == 0){                        //Si el numero es esa posición = 0, se puede rellenar.
