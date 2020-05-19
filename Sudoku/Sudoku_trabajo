@@ -20,8 +20,8 @@ void print_sudoku(){
     int count22 = 0;
 
     cout << endl;
-    for(int i = 0; i < sudoku0.size(); i++){
-        for(int ii = 0; ii< sudoku0.at(i).size(); ii++){
+    for(int i{0}; i < sudoku0.size(); i++){
+        for(int ii{0}; ii< sudoku0.at(i).size(); ii++){
             if(sudoku0.at(i).at(ii) != 0){
                 cout << sudoku0.at(i).at(ii);
             }else{
@@ -59,17 +59,17 @@ void print_sudoku(){
 
 bool lose_fila(){
     bool a = false;
-    for (unsigned long int it = 0; it < sudoku0.size(); it++) {
+    for (unsigned long int it{0}; it < sudoku0.size(); it++) {
         vector<int> lose;
-        for (unsigned long int it2 = 0; it2 < sudoku0.at(it).size(); it2++) {
+        for (unsigned long int it2{0}; it2 < sudoku0.at(it).size(); it2++) {
             if (sudoku0.at(it).at(it2) != 0){
                 lose.push_back(sudoku0.at(it).at(it2));
             }
         }
-        for (unsigned long int adolfito = 0; adolfito < lose.size(); adolfito++) {
-            for (unsigned long int robertito = 0; robertito < lose.size(); robertito++) {
-                if (adolfito != robertito){
-                    if (lose.at(adolfito) == lose.at(robertito)){
+        for (unsigned long int j{0}; j < lose.size(); j++) {
+            for (unsigned long int k{0}; k < lose.size(); k++) {
+                if (j != k){
+                    if (lose.at(j) == lose.at(k)){
                         a = true;
                     }
                 }
@@ -81,17 +81,17 @@ bool lose_fila(){
 
 bool lose_columna(){
     bool a = false;
-    for (unsigned long int it = 0; it < sudoku0.size(); it++) {
+    for (unsigned long int it{0}; it < sudoku0.size(); it++) {
         vector<int> lose;
-        for (unsigned long int it2 = 0; it2 < sudoku0.at(it).size(); it2++) {
+        for (unsigned long int it2{0}; it2 < sudoku0.at(it).size(); it2++) {
             if (sudoku0.at(it2).at(it) != 0){
                 lose.push_back(sudoku0.at(it2).at(it));
             }
         }
-        for (unsigned long int adolfito = 0; adolfito < lose.size(); adolfito++) {
-            for (unsigned long int robertito = 0; robertito < lose.size(); robertito++) {
-                if (adolfito != robertito){
-                    if (lose.at(adolfito) == lose.at(robertito)){
+        for (unsigned long int j{0}; j < lose.size(); j++) {
+            for (unsigned long int k{0}; k < lose.size(); k++) {
+                if (j != k){
+                    if (lose.at(j) == lose.at(k)){
                         a = true;
                     }
                 }
@@ -104,18 +104,18 @@ bool lose_columna(){
 
 bool lose_cube(){
     bool a = false;
-    for (unsigned long int it = 1; it <= 7; it = it +3) {
-        for (unsigned long int it2 = 1; it2 <= 7; it2 = it2 +3) {
+    for (unsigned long int it{1}; it <= 7; it += 3) {
+        for (unsigned long int it2{1}; it2 <= 7; it2 = it2 +3) {
             vector<int> lose;
-            for (int e = -1; e < 2; e++) {
-                for (int ee = -1; ee < 2; ee++) {
+            for (int e{-1}; e < 2; e++) {
+                for (int ee{-1}; ee < 2; ee++) {
                     if (sudoku0.at(it+e).at(it+ee) != 0) lose.push_back(sudoku0.at(it+e).at(it+ee));
                 }
             }
-            for (unsigned long int adolfito = 0; adolfito < lose.size(); adolfito++) {
-                for (unsigned long int robertito = 0; robertito < lose.size(); robertito++) {
-                    if (adolfito != robertito){
-                        if (lose.at(adolfito) == lose.at(robertito)){
+            for (unsigned long int j{0}; j < lose.size(); j++) {
+                for (unsigned long int k{0}; k < lose.size(); k++) {
+                    if (j != k){
+                        if (lose.at(j) == lose.at(k)){
                             a = true;
                         }
                     }
@@ -146,8 +146,8 @@ bool lose(){
 bool win(){
     bool a= false;
     vector<int> ceros;
-    for(int i = 0; i < sudoku0.size(); i++){
-        for(int ii = 0; ii < sudoku0.at(i).size(); ii++){
+    for(int i{0}; i < sudoku0.size(); i++){
+        for(int ii{0}; ii < sudoku0.at(i).size(); ii++){
             if(sudoku0.at(i).at(ii) == 0){
                 ceros.push_back(sudoku0.at(i).at(ii));
             }
@@ -175,40 +175,36 @@ int main()
     string sudoku_name;
 
     //if random
-    unsigned long int sudoku_number = rand()%(5);
-
-    //if chose
-    /*cout << "Dime el numero del sudoku que desea realizar (0-4) " << endl;
-    cin >> sudoku_number;*/
+    unsigned long int sudoku_number = rand()%(5);        //Generamos un número aleatorio.
 
     cout << "Se eligio el sudoku: " << sudoku_number + 1 << endl;
 
-    if(sudoku_number == 0) sudoku_name = "Sudoku_I";
-    if(sudoku_number == 1) sudoku_name = "Sudoku_II";
-    if(sudoku_number == 2) sudoku_name = "Sudoku_III";
-    if(sudoku_number == 3) sudoku_name = "Sudoku_IV";
-    if(sudoku_number == 4) sudoku_name = "Sudoku_V";
+    if(sudoku_number == 0) sudoku_name = "Sudoku1";  //Dependiendo de que número salga cargamos uno u otro fichero.
+    if(sudoku_number == 1) sudoku_name = "Sudoku2";
+    if(sudoku_number == 2) sudoku_name = "Sudoku3";
+    if(sudoku_number == 3) sudoku_name = "Sudoku4";
+    if(sudoku_number == 4) sudoku_name = "Sudoku5";
 
-    sudoku.open(sudoku_name);
-    if(sudoku.is_open()){
-        while(!sudoku.eof()){
+    sudoku.open(sudoku_name);             // .Open en sudoku, donde abrimos el fichero correspondiente al numero aleatorio.0
+    if(sudoku.is_open()){                 //Comprobamos que se haya abierto.
+        while(!sudoku.eof()){             //Mientras sudoku tenga información cargamos los números en forma de string y los pasamos a enteros.
             sudoku >> numbers;
             number = atoi(numbers.c_str());
-            if(sudoku1.size() < 9){
+            if(sudoku1.size() < 9){          //Rellanmos una de las filas con los números correspondientes.
                 sudoku1.push_back(number);
             }else{
-                sudoku0.push_back(sudoku1);
-                sudoku1.erase(sudoku1.begin(), sudoku1.end());
+                sudoku0.push_back(sudoku1);                      //Metemos nuestro vector en el vector de vectores.
+                sudoku1.erase(sudoku1.begin(), sudoku1.end());   //Borramos el vector para volver a rellenarlo.
                 sudoku1.push_back(number);
             }
         }
     }else{
-        cout << "Error " << endl;
+        cout << "Error " << endl;      //Si el fichero no se ha abierto, sacamos por pantalla "Error"
     }
 
     sudoku.close();
 
-    print_sudoku();
+    print_sudoku();                   //Imprimimos el sudoku.
 
     for(;;){
         int numberr;
@@ -234,13 +230,13 @@ int main()
             cin >> now;
             sudoku0.at(num1).at(num2) = now;
         }else{
-            cout << "No puedes modificar ese numero" << endl;
+            cout << "No puedes modificar ese numero" << endl;     //Si la posición está ocupada,
         }
 
-        print_sudoku();
+        print_sudoku();                    //Imprimimos el sudoku.
 
         if(win() == true){
-            cout << "Ganaste!!" << endl;
+            cout << "Ganaste!!" << endl;   //Llamamos a win o lose dependendiendo del resultado.
             break;
         }
         if(lose() == true){
