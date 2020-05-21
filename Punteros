@@ -1,0 +1,46 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    //Pointers - store the address of a variable
+    //(*) ==> dereference operatos
+    //*p1 ==> returns value of the variable the pointes is pointing to
+    //p1 ==> returns address of where variable is stored
+    //&p1 ==> returns address of pointer
+    
+    int *p1; //Declare a pointer
+    
+    int num1 = 8;
+    p1 = &num1;
+    
+    cout << "Value: " << *p1 << endl; //Return the value in num1
+    cout << "Addres  of Variable: " << &num1 << endl; //Return the address of num1
+    cout << "Address of Variable with p1: " << p1 << endl; //Return the address of num1 with the pointer p1
+    cout << "Address of the pointer: " << &p1 << endl; //Return the address of the pointer
+    
+    cout << "===================================================" << endl;
+    
+    int num = 15;
+    int num2 = 45;
+    
+    int *p2 = &num;
+    int *p3 = &num2;
+    
+    cout << "Pointer 1: " << *p2 << endl;
+    cout << "Pointer 2: " << *p3 << endl;
+    
+    *p2 = *p3;
+    
+    cout << "Pointer 1: " << *p2 << endl;
+    cout << "Pointer 2: " << *p2 << endl;
+    
+    cout << "mun: " << num << endl;
+    cout << "num2: "  << num2 << endl;
+    
+    p2 = p3;
+    
+    
+    
+}
