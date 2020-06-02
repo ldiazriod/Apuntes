@@ -1,0 +1,16 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity minory is
+ 
+ port(A, B, C : in std_logic;
+      Z       : out std_logic);
+       
+end entity;
+
+Architecture Behavioral of minory is
+begin
+
+Z <= ((not B) and (not C)) or ((not A) and (B xor C));
+
+ end Behavioral;
