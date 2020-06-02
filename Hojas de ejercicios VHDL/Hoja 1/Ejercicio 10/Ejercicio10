@@ -1,0 +1,67 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity State_M is
+
+port(X, CLK : in std_logic;
+     RST    : in std_logic;
+     Z1, Z2 : out std_logic);
+
+end entity;
+
+Architecture Behavioral of State_M is
+type state_type is (S0, S1, S2, S3);
+signal CS, NS : state_type;
+begin
+
+process(CLK)begin
+if(rising_edge(CLK))then
+  if(RST = '1')then
+    CS <= S0;
+  else
+    CS <= NS;
+  end if;
+end if;
+end process;
+
+process(CS, X)begin
+case CS is
+
+when S0 =>
+ Z1 <= '1';
+ if(X = '0')then
+   NS <= S2; Z2 <= '0';
+ else
+   NS <= S0; Z2 <= '0';
+ end if;
+ 
+ when S1 =>
+ Z1 <= '0';
+ if(X = '0')then
+   NS <= S3; Z2 <= '0';
+ else
+   NS <= S1; Z2 <= '0';
+ end if;
+ 
+ when S2 =>
+ Z1 <= '1';
+ if(X = '0')then
+   NS <= S1; Z2 <= '0';
+ else
+   NS <= S0; Z2 <= '0';
+  end if;
+  
+  when S3 =>
+  Z1 <= '0';
+  if(X = '0')then
+    NS <= S0; Z2 <= '1';
+  else
+    NS <= S1; Z2 <= '0';
+  end if;
+  
+  when others =>
+    NS <= S0; Z1 <= '0'; Z2 <= '0';
+    
+end case;
+end process;
+end behavioral;
