@@ -1,0 +1,29 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity My_JK is
+
+port(J, K, CLK : in std_logic;
+     Q         : out std_logic);
+
+end entity;
+
+Architecture Behavioral of My_JK is
+signal aux: std_logic;
+begin
+
+process (CLK) begin
+if(rising_edge(CLK))then
+  if(J = '0' and K = '0')then
+    aux <= aux;
+  elsif(J ='1' and K = '0')then
+    aux <= '1';
+  elsif(J = '0' and K = '1')then
+   aux <= '0';
+  else
+   aux <= (not aux);
+  end if;
+end if;
+end process;
+Q <= aux;
+end Behavioral;
