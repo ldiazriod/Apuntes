@@ -1,0 +1,27 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity My_FlipFlopD is
+
+port(S, R, CLK, D: in std_logic;
+     Q           : out std_logic);
+
+end entity;
+
+Architecture Behavioral of My_FlipFlopD  is
+begin
+
+process(CLK)begin
+if(rising_edge(CLK))then
+ if(S = '1' and R = '1')then
+    Q <= not D;
+ elsif(S = '0' and R = '1')then
+    Q <= '0';
+ elsif(S = '1' and R = '0')then
+    Q <= '1';
+ else
+    Q <= D;
+ end if;
+end if;
+end process;
+end Behavioral;
