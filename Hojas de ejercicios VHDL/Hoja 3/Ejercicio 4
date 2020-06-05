@@ -1,0 +1,50 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity pruebas is
+
+ Port ( A, B  : in std_logic;
+       S      : in std_logic_vector(1 downto 0);
+       Result : out std_logic;
+       Cout   : out std_logic);
+       
+end pruebas;
+
+architecture Behavioral of pruebas is
+
+component Mux2_1 is
+
+port(A, B, S : in std_logic;
+     Y       : out std_logic);
+
+end component;
+
+component Sum is
+
+port (A, B, S : in std_logic;
+      Y       : out std_logic);
+      
+end component;
+
+
+component Mux4_1 is
+
+port (A, B, C, D : in std_logic;
+      S          : in std_logic_vector(1 downto 0);
+      Result     : out std_logic);
+      
+end component;
+
+signal OR_OPERATION, AND_OPERATION, MUX2_1_IN, SUM_IN, SUM_OUT : std_logic;
+begin
+
+OR_OPERATION <= A or B;
+AND_OPERATION <= A and B;
+MUX2_1_IN <= not(B);
+
+My_Mux2_1 : Mux2_1 port map (B, MUX2_1_IN, s(0), SUM_IN);
+My_Sum    : Sum    port map (A, SUM_IN, S(1), SUM_OUT);
+My_Mux4_1 : Mux4_1 port map (SUM_OUT, SUM_OUT, AND_OPERATION, OR_OPERATION, S, Result);
+
+end Behavioral;
