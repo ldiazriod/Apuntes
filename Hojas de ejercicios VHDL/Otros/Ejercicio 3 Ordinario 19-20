@@ -1,0 +1,46 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity pruebas is
+
+  Port (A, B, Enable, SLC, CLK : in std_logic;
+        F1, F2, F3             : out std_logic); 
+  
+end pruebas;
+
+architecture Structural of pruebas is
+
+component Mux2_1 is
+
+port(A, B, SLC  : in std_logic;
+     Y          : out std_logic);
+
+end component;
+
+component FlipFlop is
+
+port (A, CLK : in std_logic;
+      Q      : out std_logic);
+      
+end component;
+
+component Enablee is
+
+port (A, Enable : in std_logic;
+      F3        : out std_logic);
+      
+end component;
+
+signal Flip_IN, Flip_OUT, Mux_OUT : std_logic;
+
+begin
+
+Flip_IN <= A or B;
+F2 <= not (Mux_OUT);
+F1 <= Mux_OUT;
+
+My_Mux2_1   : Mux2_1    port map (Flip_IN, Flip_OUT, SLC, Mux_OUT);
+My_FlipFlop : FlipFLop  port map (Flip_IN, CLK, Flip_OUT);
+My_Enable   : Enablee   port map (Mux_OUT, enable, F3);
+ 
+end Structural;
