@@ -4,13 +4,13 @@
 
 using namespace std;
 
-class Usuario{
+class Usuario{                                  //Me he creado una clase Usuario, solo tiene la función Welcome.
 public:
     Usuario(string _nombre): nombre{_nombre}{}
 
-    void welcome();
-
-    string getNombre() const;
+    void welcome();                            //La función welcome te da la bienvenida si ya has entrado antes. Si no has entrado antes te pide tu nombre.
+    //Una vez metes el nombre, te crea dos ficheros, uno en el que se guarda tú nombre, y otro que se queda vacio.
+    string getNombre() const;                  //El fichero vacio se útiliza para guardar todos los nombres de los ficheros con los cubos que tienes en la base de datos.
     void setNombre(const string &value);
 
 private:
@@ -18,18 +18,39 @@ private:
     string nombre;
 };
 
+//He implementado todo con menús. Tenemos una función menú principal en la que estan las opciones de crear, buscar o eliminar un cubo.
 void mainMenu();
+
+//Estas dos funciones se encargan de guardar en un fichero toda la información de tus cubos.
 void guardarFicheroMod(string nomMod, string dim, vector<vector<string>> color, vector<vector<string>> nota, vector<vector<string>> algorit);
 void guardarFicheroNoMod(string dim, vector<vector<string>> color, vector<vector<string>> nota, vector<vector<string>> algorit);
+
+//Esta función es el menú en el que te piden todos los datos del cubo.
 void newCubeMenu();
 
+//Esta función es para guardar todos los nombres de los ficheros de tus cubos.
 void documentosPush_Back(string nombreFichero);
 
+//Esta función es para imprimir los nombres de los ficheros de tus cubos.
 void printFicheros();
+
+//Esta función simplemente te busca e imprime el contenido del cubo que quieras ver.
 void searchFicheros();
 
-void eliminar();
+//Estas dos funciones son para eliminar cubos. La primera función está el menú para eliminar y además te elimina el fichero como tal.
+//La segunda te elimina el nombre del fichero del fichero con todos los nombres de los cubos.
+void eliminarMenu();
 void eliminardeLista(string nombre);
+
+//Esta funcion elimina todos los ficheros del programa.
+void eliminarUsuario();
+
+
+void newBestTimeMenu();
+void searchTime();
+void newTimeMenu();
+void changeTime();
+void newTime();
 
 
 int main()
@@ -39,17 +60,11 @@ int main()
         //Variables clase Usuario
         string nombre;
 
-        //Variables para la clase cubo
-        string modName, dimensiones;
-        vector<string> unColor; vector<vector<string>> todosMisColores; //Lo hago así para que salgan todos los colores en lineas distinta.
-        vector<string> notacionUnaCara; vector<vector<string>> todasMisNotaciones; //Igual que con colores
-        vector<string> unAlgoritmo; vector<vector<string>> todosMisAlgoritmos;    //De la misma forma que en los dos anteriores.
+        Usuario miUsuario(nombre); //Nombre no lo útilizo en realidad.
 
-        Usuario miUsuario(nombre);
+        miUsuario.welcome();       //LLamamos a la función welcome.
 
-        miUsuario.welcome();
-
-        mainMenu();
+        mainMenu();               //Después simplemente llamamos al menú principal, desde ahí el programa ya se ejecuta internamente.
 
     } catch (string e) {
 
@@ -58,9 +73,106 @@ int main()
     return 0;
 }
 
+//CLASE USUARIO
+void Usuario::welcome(){
+    ifstream miUsuario("Usuario.txt");    //abrimos el fichero en el que está guardado el nombre del usuario.
+    string nombre, nombreUsuario;
+
+    if(!miUsuario.is_open()){                  //Si no se ha podido abrir, significa que no existe, así que le creamos los ficheros necesarios.
+        ofstream nuevoUsuario ("Usuario.txt");
+        ofstream nuevoFicheroDeFicheros ("todosMisDatos.txt");
+        ofstream nuevoFicheroTiempos("mejoresTiempos.txt");
+        cout << "Bienvenido, vemos que es la primera vez que te metes, podrias meter tu nombre?: ";   //le pedimos que meta su nombre.
+        cin >> nombre;
+
+        nuevoUsuario << nombre;          //Lo guardamos en el fichero llamado "Usuario.txt"
+        nuevoUsuario.close();            //Cerramos los dos ficheros.
+        nuevoFicheroDeFicheros.close();
+        nuevoFicheroTiempos.close();
+
+        //El fichero de "todosMisDatos.txt" lo dejamos vacio.
+    }
+
+    if(!miUsuario.eof()){                  //Si el fichero se abre, pues existe así que lo pasamos a un string y lo imprimimos.
+        miUsuario >> nombreUsuario;
+
+        cout << "Bienvenido a tu base de datos " << nombreUsuario << endl;
+
+        miUsuario.close();
+    }
+}
+
 //Otros
+void mainMenu(){
+
+    int decision;
+
+    cout << "Que quieres hacer?: " << endl;
+    cout << "1. Nuevo Cubo" << endl;      //Si es un nuevo cubo, te lleva al menú de nuevo cubo.
+    cout << "2. Buscar Cubo" << endl;     //Si es buscar cubo, te lleva al menú de buscar.
+    cout << "3. Eliminar Cubo" << endl;   //Si es eliminar cubo, te lleva al menú de eliminar.
+    cout << "4. Borrar usuario" << endl;
+    cout << "5. Salir" << endl;           //Esto simplemente hace que acabe el programa.
+
+    cin >> decision;
+
+    if(decision < 1 || decision > 4 ){              //Si no es una valida.
+        throw string {"No es una opcion valida"};
+    }else{                                         //Si lo es, te lleva a cada función correspondiente.
+        switch(decision){
+
+        case 1:{
+            newCubeMenu();
+            break;
+        }
+        case 2:{
+            cout << endl;
+
+            searchFicheros();
+
+            break;
+        }
+
+        case 3:{
+            cout << endl;
+
+            eliminarMenu();
+
+            break;
+        }
+
+        case 4:{
+
+            cout << endl;
+
+            eliminarUsuario();
+
+            break;
+        }
+
+        case 5: {  //Al salir
+            ifstream miUsuario ("Usuario.txt"); //Abrimos el fichero que almacena el nombre del usuario.
+            string nombreUsuario;
+
+            if(!miUsuario.eof()){               //Pasamos su contenido a un string.
+                miUsuario >> nombreUsuario;
+
+                cout << "Adios " << nombreUsuario << endl;   //Le despedimos mostrando además su nombre.
+
+                miUsuario.close();
+            }
+
+            break;
+        }
+
+        }
+    }
+}
 
 void newCubeMenu(){
+
+    //Se que no hace falta útilizar vectores 2D para hacer esto, pero quería practicarlos un poco.
+
     string nomMod, dim;
     int decision;
     int numColores, numCapas, numAlgorit;
@@ -81,16 +193,16 @@ void newCubeMenu(){
     cout << endl;
 
     cout << "Que tipo de cubo es?: " << endl;
-    cout << "1. Normal" << endl;
-    cout << "2. Modificacion" << endl;
-    cout << "3. Volver" << endl;
+    cout << "1. Normal" << endl;               //Si eliges normal, es un cubo de toda la vida, por lo que no te pide el nombre.
+    cout << "2. Modificacion" << endl;         //Si es una modificación, además te pide el nombre.
+    cout << "3. Volver" << endl;               //Te lleva de vuelta al menú principal
 
     cin >> decision;
 
-    if(decision < 1 || decision > 3){
+    if(decision < 1 || decision > 3){             //Si el número que has metido no es una opción valida.
         throw string {"No es un opcion valida"};
 
-    }else{
+    }else{                                       //En el caso de que lo sea simplemente se hacen los switch-case
         switch(decision) {
 
         case 1: {
@@ -111,7 +223,7 @@ void newCubeMenu(){
 
                 unColor.push_back(color);
                 todosLosColores.push_back(unColor);
-                unColor.erase(unColor.begin(), unColor.end());
+                unColor.clear();
             }
             cout << endl;
 
@@ -124,12 +236,12 @@ void newCubeMenu(){
 
                 unNotacion.push_back(notacion);
                 todasMisNotaciones.push_back(unNotacion);
-                unNotacion.erase(unNotacion.begin(), unNotacion.end());
+                unNotacion.clear();
             }
 
             cout << endl;
 
-            cout << "Cuantos algoritmos tiene el cubo? Debe contar además con algoritmos de uso ocasional como los de paridadad: ";
+            cout << "Cuantos algoritmos tiene el cubo? Debe contar ademas con algoritmos de uso ocasional como los de paridadad: ";
             cin >> numAlgorit;
 
             cout << endl;
@@ -137,8 +249,8 @@ void newCubeMenu(){
             cout << "Meta el algoritmo, ademas le recomendamos añadir antes de meter el algoritmo numerar o especificar el algoritmo." << endl;
 
             cout << "Ejemplo: " << endl;
-            cout << "1. B,F,L,E,Rr,B" << endl;
-            cout << "Paridad 1. B'" << endl;
+            cout << "1.B,F,L,E,Rr,B" << endl;
+            cout << "Paridad1.B'" << endl;
 
             cout << endl;
 
@@ -149,7 +261,7 @@ void newCubeMenu(){
 
                 unAlgoritmo.push_back(algoritmo);
                 todosMisAlgoritmos.push_back(unAlgoritmo);
-                unAlgoritmo.erase(unAlgoritmo.begin(), unAlgoritmo.end());
+                unAlgoritmo.clear();
 
             }
 
@@ -176,7 +288,7 @@ void newCubeMenu(){
 
             cout << endl;
 
-            cout << "Cuantos colores tiene tú cubo:? ";
+            cout << "Cuantos colores tiene tu cubo:? ";
             cin >> numColores;
 
             for(int i{0}; i < numColores; i++){
@@ -185,7 +297,7 @@ void newCubeMenu(){
 
                 unColor.push_back(color);
                 todosLosColores.push_back(unColor);
-                unColor.erase(unColor.begin(), unColor.end());
+                unColor.clear();
             }
             cout << endl;
 
@@ -198,12 +310,12 @@ void newCubeMenu(){
 
                 unNotacion.push_back(notacion);
                 todasMisNotaciones.push_back(unNotacion);
-                unNotacion.erase(unNotacion.begin(), unNotacion.end());
+                unNotacion.clear();
             }
 
             cout << endl;
 
-            cout << "Cuantos algoritmos tiene el cubo? Debe contar además con algoritmos de uso ocasional como los de paridadad: ";
+            cout << "Cuantos algoritmos tiene el cubo? Debe contar ademas con algoritmos de uso ocasional como los de paridadad: ";
             cin >> numAlgorit;
 
             cout << endl;
@@ -211,8 +323,8 @@ void newCubeMenu(){
             cout << "Meta el algoritmo, ademas le recomendamos añadir antes de meter el algoritmo numerar o especificar el algoritmo." << endl;
 
             cout << "Ejemplo: " << endl;
-            cout << "1. B,F,L,E,Rr,B";
-            cout << "Paridad 1. B'";
+            cout << "1.B,F,L,E,Rr,B" << endl;
+            cout << "Paridad1.B'" << endl;
 
             cout << endl;
 
@@ -223,7 +335,7 @@ void newCubeMenu(){
 
                 unAlgoritmo.push_back(algoritmo);
                 todosMisAlgoritmos.push_back(unAlgoritmo);
-                unAlgoritmo.erase(unAlgoritmo.begin(), unAlgoritmo.end());
+                unAlgoritmo.clear();
 
             }
 
@@ -252,70 +364,16 @@ void newCubeMenu(){
     }
 }
 
-void mainMenu(){
 
-    int decision;
-
-    cout << "Que quieres hacer?: " << endl;
-    cout << "1. Nuevo Cubo" << endl;
-    cout << "2. Buscar Cubo" << endl;
-    cout << "3. Eliminar Cubo" << endl;
-    cout << "4. Salir" << endl;
-
-    cin >> decision;
-
-    if(decision < 1 || decision > 4 ){
-        throw string {"No es una opcion valida"};
-    }else{
-        switch(decision){
-
-        case 1:{
-            newCubeMenu();
-            break;
-        }
-        case 2:{
-            cout << endl;
-
-            searchFicheros();
-
-            break;
-        }
-
-        case 3:{
-            cout << endl;
-
-            eliminar();
-
-            break;
-        }
-
-        case 4:{
-
-            ifstream miUsuario ("Usuario.txt");
-            string nombreUsuario;
-
-            if(!miUsuario.eof()){
-                miUsuario >> nombreUsuario;
-
-                cout << "Adios " << nombreUsuario << endl;
-
-                miUsuario.close();
-            }
-
-        }
-
-        }
-    }
-}
 
 void guardarFicheroMod(string nomMod, string dim, vector<vector<string>> color, vector<vector<string>> nota, vector<vector<string>> algorit){
 
-    string nombreFichero{nomMod + dim + ".txt"};
-    ofstream miNuevoCubo(nombreFichero);
+    string nombreFichero{nomMod + dim + ".txt"};         //Le decimos que al ser una modificación, el nombre del Fichero sea el nombre del mod, más las dimensiones + txt
+    ofstream miNuevoCubo(nombreFichero);                 //Creamos un fichero que tiene como nombre la suma descrita antes.
 
-    miNuevoCubo << "Nombre de la modificacion: " << nomMod << endl;
+    miNuevoCubo << "Nombre de la modificacion: " << nomMod << endl;    //Metemos las cosas dentro del fichero.
 
-    miNuevoCubo << "-----------------------------" << endl;
+    miNuevoCubo << "-----------------------------" << endl;           //Entre apartados, metemos esto para que sea más claro de ver y además facilite la impresión por pantalla.
 
     miNuevoCubo << "Dimensiones del cubo: " << dim << endl;
 
@@ -323,10 +381,10 @@ void guardarFicheroMod(string nomMod, string dim, vector<vector<string>> color, 
 
     miNuevoCubo << "Colores de las caras del cubo: " << endl;
 
-    for(unsigned int i{0}; i < color.size(); i++){
+    for(unsigned int i{0}; i < color.size(); i++){                 //Recorremos nuestras matrices y les vamos metiendo los valores.
         for(unsigned int j{0}; j < color.at(i).size(); j++){
             miNuevoCubo << color.at(i).at(j);
-            miNuevoCubo << " " << "|" << endl;
+            miNuevoCubo << " " << "|" << endl;                    //Además se le añade un barra al final de cada elemento para facilitar la impresión.
         }
     }
 
@@ -353,13 +411,13 @@ void guardarFicheroMod(string nomMod, string dim, vector<vector<string>> color, 
     }
     miNuevoCubo.close();
 
-    documentosPush_Back(nombreFichero);
+    documentosPush_Back(nombreFichero);         //Guardamos el nombre del nuevo fichero en el fichero de ficheros.
 }
 
 void guardarFicheroNoMod(string dim, vector<vector<string>> color, vector<vector<string>> nota, vector<vector<string>> algorit){
 
-    string nombreFichero{dim + ".txt"};
-    ofstream miNuevoCubo(nombreFichero);
+    string nombreFichero{dim + ".txt"};                        //Aquí es igual que antes, salvo que ahora el fichero tiene como nombre solo las dimensiones.
+    ofstream miNuevoCubo(nombreFichero);                       //El resto es exactamente igual.
 
     miNuevoCubo << "Dimensiones del cubo: " << dim << endl;
 
@@ -402,40 +460,41 @@ void guardarFicheroNoMod(string dim, vector<vector<string>> color, vector<vector
 
 void documentosPush_Back(string nombreFichero){
 
-    ifstream misDatos ("todosMisDatos.txt");
-    ofstream aux ("auxiliar.txt");
+    ifstream misDatos ("todosMisDatos.txt"); //Este fichero es en el que se guardan todos los nombres de los ficheros con la información de los cubos. Se crea al entrar por primera vez.
+    ofstream aux ("auxiliar.txt");           //Creamos un auxiliar donde meteremos los datos almacenados en el fichero de arriba, más el nuevo.
     string nombres;
 
-    vector<string> ficheros;
+    vector<string> ficheros;                //Un vector donde se van a guardar todos los nombres.
 
-    while(!misDatos.eof()){
+    while(!misDatos.eof()){                //Mientras esté lleno:
 
-        misDatos >> nombres;
+        misDatos >> nombres;               //Pasas el contenido del fichero a un string.
 
-        ficheros.push_back(nombres);
+        ficheros.push_back(nombres);      //Guardas el contenido de esa iteración en un vector.
     }
 
-    ficheros.push_back(nombreFichero);
+    ficheros.push_back(nombreFichero);   //Cuando se termina el while, se le mete además el nombre del nuevo fichero.
 
-    for(unsigned int i{0}; i < ficheros.size(); i++){
-        if(ficheros.at(i) == nombreFichero){
-            aux << ficheros.at(i);
+    for(unsigned int i{0}; i < ficheros.size(); i++){    //Recorremos el vector.
+        if(ficheros.at(i) == nombreFichero){             //Si fichero en el que estamos es el último, se mete en el fichero auxiliar sin salto de linea.
+            aux << ficheros.at(i);                       //Esto es así ya que me dí cuenta de que el último elemento se duplicaba cuando quedaba un salto de línea al final del fichero.
         }else{
-            aux << ficheros.at(i) << endl;
+            aux << ficheros.at(i) << endl;              //Si no, se guarda con un salto de línea.
         }
 
     }
+    //No hace falta meterno con saltos de línea ya que al imprimirlos no salen, pero si alguien quiere entrar en los archivos, que por lo menos quede bonito-
 
-    misDatos.close();
+    misDatos.close();   //Cerramos los dos ficheros.
     aux.close();
 
-    remove("todosMisDatos.txt");
-    rename("auxiliar.txt", "todosMisDatos.txt");
+    remove("todosMisDatos.txt");                  //Eliminamos el fichero viejo, ya tenemos sus elementos guardados en el otro fichero, además del nuevo.
+    rename("auxiliar.txt", "todosMisDatos.txt");  //Cambiamos el nombre del fichero auxiliar al del fichero viejo, así siempre tiene el mismo nombre.
 
 }
 
 void eliminardeLista(string nombre){
-    ifstream misDatos ("todosMisDatos.txt");
+    ifstream misDatos ("todosMisDatos.txt");     //Este es practicamente igual que el de antes, salvo por un par de cosas.
     ofstream aux("auxiliar.txt");
     string nombres;
     unsigned int count{0};
@@ -446,23 +505,24 @@ void eliminardeLista(string nombre){
         misDatos >> nombres;
 
         ficheros.push_back(nombres);
-    }
+    }                                           //Hasta aquí todo igual.
 
-    for(unsigned int i{0}; i < ficheros.size(); i++){
+    for(unsigned int i{0}; i < ficheros.size(); i++){   //Hacemos un for en el que vamos a buscar el nombre del fichero que queremos eliminar, y lo vamos a borrar.
         if(ficheros.at(i) == nombre){
             ficheros.erase(ficheros.begin()+i);
         }
     }
 
-    for(unsigned int j{0}; j < ficheros.size(); j++){
-        count++;
-        if(count == ficheros.size()){
+    for(unsigned int j{0}; j < ficheros.size(); j++){ //Ahora metemos el vector sin el valor eliminado.
+        count++;                                      //Esta vez lo he implementado con un contador ya que el parametro que le pasamos a la función ya no existe.
+        if(count == ficheros.size()){                 //Si el contador es igual al tamaño de vector, lo guarda sin salto de línea para que no se duplique.
             aux << ficheros.at(j);
         }else{
-            aux << ficheros.at(j) << endl;
+            aux << ficheros.at(j) << endl;           //Si no pues con salto de línea.
         }
     }
 
+    //Aquí también es igual que antes.
     misDatos.close();
     aux.close();
 
@@ -471,25 +531,95 @@ void eliminardeLista(string nombre){
 
 }
 
-void printFicheros(){
-    ifstream miDatos("todosMisDatos.txt");
-    string cubos;
-    int count{0};
+void eliminarMenu(){                     //Aqui tenemos el menú para eleminar cubos.
+    ifstream datos("todosLosDatos.txt");
+    string nombre;
+    string misDatos;
+    int decision;
 
-    while(!miDatos.eof()){
-        count++;
+    printFicheros(); //Sacamos por pantalla los ficheros que tiene el usuario guardado
 
-        string s = to_string(count);
+    cout << "Que fichero desea eliminar?(Debe meter el nombre sin el .txt): "; //Le pedimos el nombre del fichero a eliminar.
+    cin >> nombre;
 
-        miDatos >> cubos;
 
-        cout << s << ". " << cubos << endl;
+    cout << endl;
+
+    cout << "Esta seguro de que quiere eliminar el siguiente archivo?: "  << nombre + ".txt" << endl; //nos aseguramos de que el usuario lo quiera eliminar, para evitar problemas.
+    cout << "1. No" << endl;
+    cout << "2. Si" << endl;
+    cin >> decision;
+
+    cout << endl;
+
+    if(decision < 1 || decision > 2){                   //En caso de que no sea una opcion valida.
+        throw string {"No es una opcion valida"};
+    }else{
+        switch(decision){
+        case 1:{
+
+            cout << "Se le ha devuelto al menu princiapal" << endl;      //Si no quería eliminar el cubo, se le devuelva al menú principal.
+
+            cout << endl;
+
+            mainMenu();
+
+            break;
+        }
+
+        case 2:{                    //si lo quería hacemos lo siguiente.
+            const char *datName;    //Nos creamos un puntero de tipo char y le decimos que es una constante.
+
+            nombre = nombre + ".txt";   //Convertimos el nombre que ha metído el usuario en el nombre del fichero.
+
+            datName = nombre.c_str();   //Inicializamos el puntero a nombre convertido en chars.
+
+            remove(datName);            //Eliminamos el archivo correspondiente al nombre que ha metido el usuario.
+
+            eliminardeLista(nombre);    //Luego lo eliminamos del fichero de nombres de fichero.
+
+            cout << "Su fichero ha sido eliminado" << endl;   //Se le comunica que el fichero se ha eliminado.
+
+            cout << endl;
+
+            mainMenu();  //Le devolvemos al menú principal.
+        }
+
+        }
+
     }
 
 }
 
+void printFicheros(){
+    ifstream miDatos("todosMisDatos.txt"); //Abrimos el fichero con todos nuestros datos.
+    string cubos;
+    vector<string> comprobar;
+    int count{0};   //Esto es para que cuando salga por pantalla, tenga un número a su lado, simplemente es para que quede bonito.
+
+    while(!miDatos.eof()){
+        count++;            //Por cada iteración, le sumamos uno.
+
+
+
+        string s = to_string(count);   //Creamos un string y convertimos el número entero del contador a string.
+
+        miDatos >> cubos;              //Pasamos los datos del fichero a cubos.
+
+        comprobar.push_back(cubos);
+
+        if(cubos.size() == 0){
+            throw string {"No tienes ficheros"};
+        }else{
+            cout << s << ". " << cubos << endl; //Sacamos por pantalla el número, un punto y el nombre del fichero de nuestros cubos.
+        }
+    }
+
+
+    miDatos.close();
+}
+
 void searchFicheros(){
-    //ifstream miFichero("todosMisDatos");
     char volver;
     string nombreFichero;
     string datosDelCubo;
@@ -499,46 +629,51 @@ void searchFicheros(){
 
     cout << endl;
 
-    printFicheros();
+    printFicheros();   //Sacamos los nombres de los ficheros para que el usuario puede ver cuales tiene.
 
-    cout << "Cual de los siguientes cubos quieres ver?: ";
-    cin >> nombreFichero;
+    cout << "Cual de los siguientes cubos quieres ver?(Debe meter el nombre sin el .txt): ";
+    cin >> nombreFichero;                                  //Le pedimos que ponga el nombre del fichero.
 
     cout << endl;
 
-    ifstream verCubo(nombreFichero + ".txt");
+    ifstream verCubo(nombreFichero + ".txt");         //Abrimos el fichero con el nombre que ha puesto el usuario + .txt
+    //Esto lo hago para que el usuario no tenga que poner .txt cuando vaya a buscar algo.
 
-    if(nombreFichero.size() > 3){
+    //Si el fichero tiene más de 4 caracteres, significa que es un mod, por lo que se imprime de otra forma.
+    //La razón por la que es 4 y no 3 (3x3, 4x4, etc) es porque también existen cuboides (3x3x2, 4x3x2, etc)
+    if(nombreFichero.size() > 4){
         while(!verCubo.eof()){
 
             verCubo >> datosDelCubo;
 
-            if(datosDelCubo != "-----------------------------"){
-                if(datosDelCubo == nombreFichero){
-                    datosDelCubo = " ";
+            //Aquí imprimimos todo lo del fichero pero de forma bonita.
+
+            if(datosDelCubo != "-----------------------------"){   //Mientras no exista una separación.
+                if(datosDelCubo == nombreFichero){                 //Si los datos del cubo son igual al nombre del fichero.
+                    datosDelCubo = " ";                             //Lo convertimos a un espacio. Para que no se imprima con un salto de línea.
                 }
 
-                if(datosDelCubo == "|"){
-                    datosDelCubo = "";
-                    cout << endl;
-                    cout << datosDelCubo;
+                if(datosDelCubo == "|"){                           //Estas barritas son las que marcan que hay que hacer un salto de línea.
+                    datosDelCubo = "";                             //Primero las borramos para que no se impriman y quede feo.
+                    cout << endl;                                  //Luego hacemos el salto de línea.
+                    cout << datosDelCubo;                          //Y las sacamos por pantalla para que no intefiera más abajo.
                 }else{
-                    cout << datosDelCubo << " ";
+                    cout << datosDelCubo << " ";                   //Si no es esa barrita, se imprimen los datos del fichero con un espacio entre medias.
                 }
 
-                if(datosDelCubo == "cubo:"){
-                    if(count == 0){
+                if(datosDelCubo == "cubo:"){                       //Si la palabra en ese momento es "cubo" queremos un salto de línea.
+                    if(count == 0){                                //Aquí esto no se útiliza mucho, es para que al encontrar la primera palabra cubo, no haga salto de línea.
                         count++;
                     }else{
-                        cout << endl;
+                        cout << endl;                              //Si el contador no es cero, hacemos salto de línea.
                         cout << endl;
                         cout << "";
                     }
                 }
 
             }else{
-                cout << endl;
-                cout << datosDelCubo << endl;
+                cout << endl;                                     //En el caso de que exista una separación, hacemos un salto de línea
+                cout << datosDelCubo << endl;                     //Imprimimos la separación y otro salto de línea.
             }
 
         }
@@ -546,7 +681,7 @@ void searchFicheros(){
         cout << endl;
         cout << endl;
 
-        cout << "Cuando desee volver, pulse -v-" << endl;
+        cout << "Cuando desee volver, pulse -v-" << endl;            //Si quiere volver el usuario debe pulsar la v y le devolverá al menú principal.
         cin >> volver;
 
         if(volver != 'v'){
@@ -556,7 +691,7 @@ void searchFicheros(){
             mainMenu();
         }
 
-    }else{
+    }else{                                                         //En el caso de que no sea una modificación es casi igual, salvo por una cosa.
 
         while(!verCubo.eof()){
 
@@ -576,12 +711,12 @@ void searchFicheros(){
                 }
 
                 if(datosDelCubo == "cubo:"){
-                    if(count == 0){
-                        count++;
-                        datosDelCubo = nombreFichero;
-                        cout << datosDelCubo;
-                    }else{
-                        cout << endl;
+                    if(count == 0){                               //Queremos que las dimensiones no salgan en otra línea, pura estetica.
+                        count++;                                  //Así que si el contador es 0, significa que es la primera palabra cubo:
+                        datosDelCubo = nombreFichero;             //Convertimos la palabra cubo: en la variable nombreFichero, por ejemplo, (2x2).
+                        cout << datosDelCubo;                     //Sacamos por pantalla la palabra. Esto es así por la siguiente razón.
+                    }else{                                        //Si sacamos por pantalla datosDelCubo sin cambiar el nombre saldría cubo: cubo:, pero al cambiarlo, sale cubo: 2x2.
+                        cout << endl;                             //El resto es igual.
                         cout << endl;
                         cout << "";
                     }
@@ -610,90 +745,267 @@ void searchFicheros(){
 
 }
 
-
-void eliminar(){
-    string nombre;
-    string misDatos;
+void eliminarUsuario(){
     int decision;
-    printFicheros();
-
-    cout << "Que fichero desea eliminar?: ";
-    cin >> nombre;
-
-    cout << endl;
-
-    cout << "Esta seguro de que quiere eliminar el siguiente archivo?: "  << nombre + ".txt" << endl;
+    string nombreUsuario, miUsuario;
+    string nombreFicheros;
+    const char *miData;
+    cout << "Estas seguro de que quieres borrar tu usuario?: " << endl;
     cout << "1. No" << endl;
     cout << "2. Si" << endl;
-    cin >> decision;
 
-    cout << endl;
+    cin >> decision;
 
     if(decision < 1 || decision > 2){
         throw string {"No es una opcion valida"};
     }else{
         switch(decision){
-        case 1:{
 
-            cout << "Se le ha devuelto al menu princiapal" << endl;
+        case 1:{
+            cout << "Se te ha devuelto al menu principal" << endl;
 
             cout << endl;
+
+            mainMenu();
+            break;
+        }
+
+        case 2:{
+            ifstream Usuario("Usuario.txt");
+            ifstream misDatos("todosMisDatos.txt");
+
+            if(!Usuario.eof()){
+                Usuario >> miUsuario;
+            }
+
+            cout << "Debe meter antes lo siguiente: " << miUsuario << endl;
+            cin >> nombreUsuario;
+
+            if(nombreUsuario != miUsuario) {
+                cout << "No es correcto, por favor, meta el nombre correcto: ";
+                cin >> nombreUsuario;
+            }
+
+            while(!misDatos.eof()) {
+                misDatos >> nombreFicheros;
+
+                miData = nombreFicheros.c_str();
+
+                remove(miData);            //Eliminamos el archivo correspondiente al nombre guardado en nuestro fichero de ficheros.
+            }
+
+            cout << "Se han eliminado todos los datos" << endl;
+
+            Usuario.close();
+            misDatos.close();
+
+            remove("Usuario.txt");
+            remove("todosMisDatos.txt");
+        }
+        }
+    }
+}
+
+void newBestTimeMenu(){
+
+    ifstream misTiempos("mejoresTiempos.txt");
+    //ifstream misDatos ("todosMisDatos.txt");
+    int decision{0};
+
+    cout << "Que desea hacer?: " << endl;
+    cout << "1. Buscar mi mejor tiempo" << endl;
+    cout << "2. Modificar mi mejor tiempo" << endl;
+    cout << "3. Volver" << endl;
+
+    cin >> decision;
+
+    cout << endl;
+
+    if(decision < 1 || decision > 3){
+        throw string {"No es una decision valida"};
+    }else{
+        switch(decision){
+
+        case 1: {
+
+            searchTime();
+
+            break;
+        }
+
+        case 2: {
+
+            changeTime();
+
+            break;
+        }
+
+        case 3: {
 
             mainMenu();
 
             break;
         }
 
-        case 2:{
-            const char *datName;
+        }
+    }
 
-            nombre = nombre + ".txt";
 
-            datName = nombre.c_str();
+}
 
-            remove(datName);
+void searchTime(){
 
-            eliminardeLista(nombre);
+    ifstream misTiempos ("mejoresTiempos.txt");
+    string time;
+    string fichero;
+    vector<string> buscar;
 
-            cout << "Su fichero ha sido eliminado" << endl;
+    printFicheros();
 
-            cout << endl;
+    cout << endl;
 
-            mainMenu();
+    cout << "Meta el cubo el cual quieras ver su tiempo: ";
+    cin >> fichero;
 
+    while(!misTiempos.eof()) {
+
+        misTiempos >> time;
+
+        buscar.push_back(time);
+    }
+
+    for(unsigned int i{0}; i < buscar.size(); i++){
+        if(buscar.at(i-1) == fichero){
+            cout << "El mejor tiempo de " << buscar.at(i-1) << " es de: " << buscar.at(i) << endl;
+        }
+    }
+
+    misTiempos.close();
+}
+
+void newTimeMenu(){
+
+    int decision;
+
+    cout << "Que quiere hacer?: " << endl;
+    cout << "1. Cambiar un tiempo" << endl;
+    cout << "2. Crear un tiempo para un cubo nuevo" << endl;
+    cout << "3. Volver" << endl;
+
+    cin >> decision;
+
+    cout << endl;
+
+    if(decision < 1 || decision > 3){
+        throw string {"No es una opcion valida"};
+    }else{
+
+        switch(decision){
+
+        case 1: {
+
+            changeTime();
+
+            break;
+        }
+
+        case 2: {
+
+            break;
+        }
+
+        case 3: {
+
+            cout << "Se le ha devuelto al menu de tiempos" << endl;
+
+            newBestTimeMenu();
+            break;
         }
 
         }
-
     }
 
 }
 
-//CLASE USUARIO
-void Usuario::welcome(){
-    ifstream miUsuario("Usuario.txt");
-    string nombre, nombreUsuario;
 
-    if(!miUsuario.is_open()){
-        ofstream nuevoUsuario ("Usuario.txt");
-        ofstream nuevoFicheroDeFicheros ("todosMisDatos.txt");
-        cout << "Bienvenido, vemos que es la primera vez que te metes, podrías meter tu nombre?: ";
-        cin >> nombre;
+void changeTime(){
 
-        nuevoUsuario << nombre;
-        nuevoUsuario.close();
-        nuevoFicheroDeFicheros.close();
+    ifstream misTiempos("mejoresTiempos.txt");
+    ofstream aux ("auxiliar.txt");
+    string tiempos;
+    string guardar;
+    float miNuevoTiempo{0};
+    int counter{0};
+    vector<string> cambiar;
+
+    printFicheros();
+
+    cout << endl;
+
+    cout << "A cual de estos cubos les quieres cambiar el mejor tiempos? :";
+    cin >> tiempos;
+
+    cout << endl;
+
+    while(!misTiempos.eof()){
+
+        misTiempos >> guardar;
+
+        cambiar.push_back(guardar);
     }
 
-    if(!miUsuario.eof()){
-        miUsuario >> nombreUsuario;
+    for(unsigned int i{0}; i < cambiar.size(); i++){
+        counter++;
+        if(cambiar.at(i-1) == tiempos){
+            cambiar.erase(cambiar.begin() + i);
 
-        cout << "Bienvenido a tu base de datos " << nombreUsuario << endl;
+            cout << "Meta su nuevo tiempo: ";
+            cin >> miNuevoTiempo;
 
-        miUsuario.close();
+            string s = to_string(miNuevoTiempo);
+
+           cambiar.at(i) = miNuevoTiempo;
+
+           if(counter == cambiar.size()){
+               aux << cambiar.at(i);
+           }else{
+               aux << cambiar.at(i) << endl;
+           }
+           counter++;
+        }
+
+        if(counter == cambiar.size()){
+            aux << cambiar.at(i);
+        }else{
+            aux << cambiar.at(i) << endl;
+        }
     }
+
+    misTiempos.close();
+    aux.close();
+
+    remove("mejoresTiempos.txt");
+    rename("auxiliar.txt", "mejoresTiempos.txt");
 }
 
+void newTime(){
+
+    ifstream misTiempos ("mejoresTiempos.txt");
+    ofstream aux ("auxiliar.txt");
+    string newTiempo;
+    string tiempos;
+    vector<string> guardar;
+    float newTime{0};
+
+    printFicheros();
+
+    cout << endl;
+
+
+
+}
+
+//CLASE USUARIO.
 string Usuario::getNombre() const
 {
     return nombre;
