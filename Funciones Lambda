@@ -1,0 +1,151 @@
+#include <iostream>
+#include <functional>
+#include <vector>
+
+using namespace std;
+
+//FILTRAR VECTORES
+
+vector<int> map (vector<int> &v, function<int(int)> const & op){
+    vector<int> resultado;
+    
+    for(auto elem : v){
+        resultado.push_back(op(elem));
+    }
+    
+    return resultado;
+}
+
+vector<int> filtro(vector<int>  const & v, function<int(int, int)> const & op){
+    vector<int> resultado;
+    
+    for(int i{0}; i < v.size(); i++){
+        if(op(v.at(i), i)){
+            resultado.push_back(v.at(i));
+        }
+    }
+    
+    return resultado;
+}
+
+void print(vector<int> const & v){
+    
+    for(auto elem : v){
+        cout << elem << "-";
+    }
+}
+
+//FUNCION QUE DEVUELVE UNA FUNCION
+
+function<void(string)> sayHello(string greeting){
+    return [=](string name)->void {
+        cout << greeting << " " << name << endl;
+    };
+}
+
+function<void(string)> sayHello2(string greeting){
+    return [&](string name)->void {
+        cout << greeting << " " << name << endl;
+    };
+}
+
+//RECONOCER SI UN VECTOR TIENE UN ELEMENTO BUSCADO
+
+int contiene (vector<int> &v, function<bool(int)> fp){
+    
+    for(auto elem : v){
+        if(fp(elem)){
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+
+int main()
+{
+    
+    vector<int> v1 = {1,2,3,4,5,6,7,8,9,10};
+    
+    cout << "------FILTRAR VECTORES------" << endl;
+    
+    cout << endl;
+    
+    print(v1);
+    
+    cout << endl;
+    
+    auto v2 = map(v1, [](int elem)->int{
+        return 2*elem;
+    });
+    
+    print(v2);
+    
+    cout << endl;
+    
+    auto v3 = filtro(v1, [](int elem, int index)->int{
+        return ((elem % 3 == 0) && (index % 2 == 0));
+        
+    });
+    
+    print(v3);
+    
+    cout << endl;
+    cout << endl;
+    
+    cout << "------FUNCION QUE DEVUELVE UNA FUNCION------" << endl;
+    
+    cout << endl;
+    
+    auto greetInSpanish = sayHello("hola");
+    auto greetInEnglish = sayHello("hello");
+    auto greetInItalian = sayHello("ciao");
+    
+    greetInSpanish("Luis"); // hola Luis
+    greetInEnglish("Luis"); // hello Luis
+    greetInItalian("Luis"); // ciao Luis
+    
+    cout << endl;
+    
+    auto greetInSpanish2 = sayHello2("hola");
+    auto greetInEnglish2 = sayHello2("hello");
+    auto greetInItalian2 = sayHello2("ciao");
+    
+    greetInSpanish2("Luis"); // hola Luis
+    greetInEnglish2("Luis"); // hello Luis
+    greetInItalian2("Luis"); // ciao Luis
+    
+    cout << endl;
+    
+    cout << "------RECONOCER SI UN VECTOR TIENE UN ELEMENTO BUSCADO------" << endl;
+    
+    cout << endl;
+    
+    vector<int> vectorLLeno = {1, 5, 10, 13, 21, 48, 129};
+    
+    if(contiene(vectorLLeno, [](int a) {return a == 21;})){
+        cout << "Tu vector tiene un 21" << endl;
+    }else{
+        cout << "Tu vector no tiene un 21" << endl;
+    }
+    
+    cout << endl;
+    
+    
+    if(contiene(vectorLLeno, [](int a) {return a == 129;})){
+        cout << "Tu vector tiene un 129" << endl;
+    }else{
+        cout << "Tu vector no tiene un 129" << endl;
+    }
+    
+    cout << endl;
+    
+    if(contiene(vectorLLeno, [](int a) {return a == 12;})){
+        cout << "Tu vector tiene un 12" << endl;
+    }else{
+        cout << "Tu vector no tiene un 12" << endl;
+    }
+    
+    return 0;
+}
