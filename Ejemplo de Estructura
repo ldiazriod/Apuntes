@@ -1,0 +1,329 @@
+#include <iostream>
+#include <vector>
+#include <functional>
+
+using namespace std;
+
+struct Libro{
+    string autor;
+    string titulo;
+    string tags;
+    string ubicacion;
+    int indice;
+};
+
+vector<Libro> misLibros;
+
+void darAlta(Libro const &nuevoLibro){
+    
+    misLibros.push_back(nuevoLibro);
+    
+}
+
+Libro buscarLibro(int indice);
+void menuPrincipa();
+void printLibro(Libro const &aImprimir);
+void printTituIndi();
+vector<Libro> buscarPorAutor(string autor);
+void printAutor(vector<Libro> const &aImprimir);
+vector<Libro> buscarPorTag(string tag);
+void printPorTag(vector<Libro> const &aImprimir);
+void printBiblioteca();
+void cambiarElementoMenu(int index);
+void cambiarElemento(int decision, int index);
+void cambiarElementoSeguir(int index);
+
+
+
+int main()
+{
+    
+    menuPrincipa();
+    return 0;
+    
+}
+
+void menuPrincipa(){
+    
+    int decision;
+    cout << "Buenas que quieres hacer?: " << endl;
+    cout << "1. Anadir libro" << endl;
+    cout << "2. Buscar libro" << endl;
+    cout << "3. Ver titulos con su indice" << endl;
+    cout << "4. Buscar por autor" << endl;
+    cout << "5. Buscar por tag" << endl;
+    cout << "6. Ver todos los libros de la biblioteca" << endl;
+    cout << "7. Cambiar datos de una libro" << endl;
+    
+    cin >> decision;
+    
+    switch(decision) {
+    
+    case 1: {
+        int indice;
+        string autor, titulo, tags, ubicacion;
+        cout << "Mete el nombre del autor: ";
+        cin >> autor;
+        
+        cout << "Mete el titulo del libro: ";
+        cin >> titulo;
+        
+        cout << "Mete el tags: ";
+        cin >> tags;
+        
+        cout << "Donde lo vas a ubicar?: ";
+        cin >> ubicacion;
+        
+        cout << "Mete el indice: ";
+        cin >> indice;
+        
+        Libro nuevoLibro{autor, titulo, tags, ubicacion, indice};
+        darAlta(nuevoLibro);
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;
+    }
+        
+    case 2: {
+        int buscarIndice;
+        cout << "Meta el indice del libro: ";
+        cin >> buscarIndice;
+        
+        printLibro(buscarLibro(buscarIndice));
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;
+    }
+        
+    case 3: {
+        printTituIndi();
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;
+    }
+        
+    case 4: {
+        string autor;
+        cout << "Meta el nombre del autor: ";
+        cin >> autor;
+        
+        printAutor(buscarPorAutor(autor));
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;
+    }
+        
+    case 5: {
+        string tag;
+        
+        printPorTag(buscarPorTag(tag));
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;
+    }
+        
+    case 6: {
+        printBiblioteca();
+        
+        cout << endl;
+        
+        menuPrincipa();
+        break;   
+    }
+    case 7: {
+        string titulo;
+        
+        cout << "Meta el titulo del libro que quieres cambiar: ";
+        cin >> titulo;
+        
+        for(unsigned int i{0}; i < misLibros.size(); i++){
+            if(misLibros.at(i).titulo == titulo){
+                cambiarElementoMenu(i);
+            }
+        }    
+    }
+        
+    }
+}
+
+Libro buscarLibro(int indice){
+    Libro li;
+    cout << misLibros.size() << endl;
+    unsigned int counter{0};
+    for(unsigned int i{0}; i < misLibros.size(); i++){
+        if(misLibros.at(i).indice == indice){
+            counter = i;
+        }
+    }
+    
+    return misLibros.at(counter);
+}
+
+vector<Libro> buscarPorAutor(string autor){
+    vector<Libro> aux;
+    for(unsigned int i{0}; i < misLibros.size(); i++){
+        if(misLibros.at(i).autor == autor){
+            aux.push_back(misLibros.at(i));
+        }
+    }
+    return aux;
+}
+
+vector<Libro> buscarPorTag(string tag){
+    vector<Libro> aux;
+    for(unsigned int i{0}; i < misLibros.size(); i++){
+        if(misLibros.at(i).tags == tag){
+            aux.push_back(misLibros.at(i));
+        }
+    }
+    return aux;
+}
+
+void cambiarElementoMenu(int index){
+    int decision;
+    cout << "Que quieres cambiar?: " << endl;
+    cout << "1. Nombre del autor" << endl;
+    cout << "2. Titulo del libro" << endl;
+    cout << "3. Tag de libro" << endl;
+    cout << "4. Ubicacion del libro" << endl;
+    cout << "5. Indice del libro" << endl;
+    
+    cin >> decision;
+    
+    cambiarElemento(decision, index);
+    
+}
+void cambiarElemento(int decision, int index){
+    switch(decision) {
+    
+    case 1: {
+        string nombre;
+        cout << "Meta el nuevo nombre del autor: ";
+        cin >> nombre;
+        misLibros.at(index).autor = nombre;
+        cambiarElementoSeguir(index);
+        break;
+    }
+        
+    case 2: {
+        string titulo;
+        cout << "Meta el nuevo titulo del libro: ";
+        cin >> titulo;
+        misLibros.at(index).titulo = titulo;
+        cambiarElementoSeguir(index);
+        break;
+    }
+        
+    case 3: {
+        string tag;
+        cout << "Meta el nuevo tag del libro: ";
+        cin >> tag;
+        misLibros.at(index).tags = tag;
+        cambiarElementoSeguir(index);
+        break;
+    }
+        
+    case 4: {
+        string ubicacion;
+        cout << "Meta la nueva ubicacion del libro: ";
+        cin >> ubicacion;
+        misLibros.at(index).ubicacion = ubicacion;
+        cambiarElementoSeguir(index);
+        break;
+    }
+        
+    case 5: {
+        int indice;
+        cout << "Meta el nuevo indice del libro: ";
+        cin >> indice;
+        misLibros.at(index).indice = indice;
+        cambiarElementoSeguir(index);
+        break;
+    }
+        
+    }
+}
+
+void cambiarElementoSeguir(int index){
+    int decision;
+    
+    cout << "Quieres cambiar alguna otra cosa?: " << endl;
+    cout << "1. No" << endl;
+    cout << "2. Si" << endl;
+    
+    cin >> decision;
+    
+    switch(decision) {
+    
+    case 1: {
+        menuPrincipa();
+        break;
+    }
+        
+    case 2: {
+        cambiarElementoMenu(index);
+    }
+        
+    }
+}
+
+void printLibro(Libro const &aImprimir){
+    cout << "Nombre del autor: " << aImprimir.autor << endl;
+    cout << "Titulo del libro: " << aImprimir.titulo << endl;
+    cout << "Tag del libro: " << aImprimir.tags << endl;
+    cout << "Ubicacion de libro: " << aImprimir.ubicacion << endl;
+    cout << "Indice del libro: " << aImprimir.indice << endl;
+}
+
+void printTituIndi(){
+    for(unsigned int i{0}; i < misLibros.size(); i++){
+        cout << "Titulo del libro: " << misLibros.at(i).titulo << endl;
+        cout << "Indice del libro: " << misLibros.at(i).indice << endl;
+        
+        cout << "-------------------------" << endl;
+        
+    }
+}
+
+void printAutor(vector<Libro> const &aImprir){
+    for(unsigned int i{0}; i < aImprir.size(); i++){
+        cout << "Titulo del libro: " << aImprir.at(i).titulo << endl;
+        cout << "Tag del libro: " << aImprir.at(i).tags << endl;
+        cout << "Ubicacion de libro: " <<aImprir.at(i).ubicacion << endl;
+        cout << "Indice del libro: " << aImprir.at(i).indice << endl;
+        
+        cout << "------------------------" << endl;
+        
+    }
+}
+
+void printPorTag(vector<Libro> const &aImprimir){
+    for(unsigned int i{0}; i < aImprimir.size(); i++){
+        cout << "Nombre del autor: " << aImprimir.at(i).autor << endl;
+        cout << "Titulo del libro: " << aImprimir.at(i).titulo << endl;
+        cout << "Ubicacion de libro: " << aImprimir.at(i).ubicacion << endl;
+        cout << "Indice del libro: " << aImprimir.at(i).indice << endl;
+        
+        cout << "------------------------" << endl;
+    }
+}
+
+void printBiblioteca(){
+    Libro lib;
+    for(unsigned int i{0}; i < misLibros.size(); i++){
+        printLibro(misLibros.at(i));
+        
+        cout << "---------------------" << endl;
+    }
+}
+
