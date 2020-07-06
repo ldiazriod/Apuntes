@@ -1,0 +1,84 @@
+#include <iostream>
+
+using namespace std;
+
+struct Nodo{
+    int dato;
+    Nodo* siguiente;
+    Nodo* anterior;
+};
+
+struct IdenLista{
+    int tamano;
+    Nodo* primero;
+    Nodo* ultimo;
+};
+
+class ListaDoble{
+public:
+    ListaDoble();
+
+    //Insertar en lista vacia
+    void insertarListaVacia(Nodo *n);
+
+    //Insertar directamente el nodo
+    void insertarInicio(Nodo *n);
+    void insertarFinal(Nodo *n);
+
+
+    bool vacia(void);
+private:
+    IdenLista *MiLista = new IdenLista;
+};
+
+int main()
+{
+
+    return 0;
+}
+
+void ListaDoble::insertarListaVacia(Nodo *n)
+{
+    if(n != nullptr){
+        Nodo *NuevoNodo = new Nodo;
+        *NuevoNodo = *n;
+        NuevoNodo->siguiente = nullptr;
+        NuevoNodo->anterior = nullptr;
+        MiLista->primero = NuevoNodo;
+        MiLista->ultimo = NuevoNodo;
+        MiLista->tamano++;
+    }
+}
+
+void ListaDoble::insertarInicio(Nodo *n)
+{
+    Nodo *NuevoNodo = new Nodo;
+    *NuevoNodo = *n;
+    if(vacia()){
+        insertarListaVacia(n);
+    }else{
+        NuevoNodo->anterior = nullptr;
+        NuevoNodo->siguiente = MiLista->primero;
+        MiLista->primero = NuevoNodo;
+        MiLista->tamano++;
+    }
+}
+
+void ListaDoble::insertarFinal(Nodo *n)
+{
+    Nodo *NuevoNodo = new Nodo;
+    *NuevoNodo = *n;
+    if(vacia()){
+        insertarListaVacia(n);
+    }else{
+        NuevoNodo->siguiente = nullptr;
+        NuevoNodo->anterior = MiLista->ultimo;
+        MiLista->ultimo = NuevoNodo;
+        MiLista->tamano++;
+    }
+}
+
+bool ListaDoble::vacia()
+{
+    return (MiLista->primero == nullptr);
+}
