@@ -1,0 +1,33 @@
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int num = 10;
+		
+		System.out.println("Bucle if-else");
+		//if-else
+		if(num < 10){
+			//Instrucciones
+			System.out.println("El numero es menor que 10");
+		}else{
+			//Instrucciones
+			System.out.println("El numero es mayor o igual que 10");
+		}
+		
+		System.out.println("Bucle for");
+		for(int i = 0; i < 10; i++){
+			System.out.print(num + " - ");
+			num--;
+		}
+		
+		System.out.println();
+		
+		System.out.println("Bucle while");
+		num = 10;
+		while(num != 0){
+			System.out.print(num + " - ");
+			num--;
+		}
+	}
+}
