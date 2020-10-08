@@ -1,0 +1,15 @@
+#include <iostream>
+
+using namespace std;
+
+//(a|b)* abb
+//Grafo sin algoritmo de busqueda. Máquina de estado.
+   //Return boolean si la expresión regular pasada por el usuario se cumple o no
+   //Ecuación de expresion a maquinas de estado. 
+   //Si se cumple una condicion pasamos a la siguiente, si no, devolvemos false
+   //¿Recursividad? En caso de * o +. Condicion de salida: Si se cumple o no se cumple. Si se cumple, seguimos recorriendo la maquina, si no, return false
+int main()
+{
+    cout << "Hello World!" << endl;
+    return 0;
+}
